@@ -15,6 +15,7 @@ public class AppTest extends BaseTest {
     public void queryManagerByNameTest(){
         Manager mr = managerDao.queryManagerByName("mr");
         System.out.println(mr);
+//        StringUtils.
     }
 
 }
