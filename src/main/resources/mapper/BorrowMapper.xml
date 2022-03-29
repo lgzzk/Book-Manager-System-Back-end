@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.lgzzk.dao.BorrowDao">
+
+    <select id="queryBorrowOrder" resultType="BorrowOrderDto">
+        SELECT tb_bookinfo.barcode,
+               tb_bookinfo.bookname,
+               tb_booktype.typename,
+               tb_bookcase.name            AS caseName,
+               tb_publishing.pubname,
+               tb_bookinfo.author,
+               tb_bookinfo.price           AS price,
+               count(tb_bookinfo.bookname) AS count
+        FROM tb_bookinfo
+                 INNER JOIN
+             tb_borrow
+             ON
+                 tb_bookinfo.id = tb_borrow.bookid
+                 INNER JOIN
+             tb_booktype
+             ON
+                 tb_bookinfo.typeid = tb_booktype.id
+                 INNER JOIN
+             tb_bookcase
+             ON
+                 tb_bookinfo.typeid = tb_bookcase.id
+                 INNER JOIN
+             tb_publishing
+             ON
+                 tb_bookinfo.ISBN = tb_publishing.ISBN
+        GROUP BY tb_bookinfo.bookname
+        ORDER BY count DESC
+    </select>
+
+</mapper>
+

@@ -9,6 +9,7 @@
     </settings>
     <typeAliases>
         <package name="site.lgzzk.entity"/>
+        <package name="site.lgzzk.dto"/>
     </typeAliases>
 
 </configuration>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.lgzzk.dao.LibraryDao">
+
+    <resultMap type="library" id="libraryMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="libraryName" column="libraryname" jdbcType="VARCHAR"/>
+        <result property="curator" column="curator" jdbcType="VARCHAR"/>
+        <result property="tel" column="tel" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="introduce" column="introduce" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="libraryMap">
+        select id,
+               libraryname,
+               curator,
+               tel,
+               address,
+               email,
+               url,
+               createDate,
+               introduce
+        from tb_library
+        where id = #{id}
+    </select>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tb_library
+        <set>
+            <if test="libraryName != null and libraryName != ''">
+                libraryname = #{libraryName},
+            </if>
+            <if test="curator != null and curator != ''">
+                curator = #{curator},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="url != null and url != ''">
+                url = #{url},
+            </if>
+            <if test="createDate != null">
+                createdate = #{createDate},
+            </if>
+            <if test="introduce != null and introduce != ''">
+                introduce = #{introduce},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
+

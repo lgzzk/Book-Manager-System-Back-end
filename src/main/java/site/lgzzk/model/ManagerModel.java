@@ -1,9 +1,12 @@
 package site.lgzzk.model;
 
 public class ManagerModel {
+
     private Integer id;
 
     private String name;
+
+    private String token;
 
     public Integer getId() {
         return id;
@@ -19,5 +22,13 @@ public class ManagerModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

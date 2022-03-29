@@ -2,28 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="site.lgzzk"/>
+    <!--开启包扫描-->
+    <context:component-scan base-package="site.lgzzk">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
-    <mvc:cors>
-        <mvc:mapping path="/**" />
-    </mvc:cors>
-
-    <!--    开启注解驱动-->
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+    <!--开启aop代理-->
+    <aop:aspectj-autoproxy/>
 
     <context:property-placeholder location="classpath:db.properties"/>
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -31,6 +28,7 @@
         <property name="jdbcUrl" value="${mysql.url}"/>
         <property name="user" value="${mysql.user}"/>
         <property name="password" value="${mysql.password}"/>
+        <property name="autoCommitOnClose" value="false"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -40,7 +38,32 @@
     </bean>
 
     <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="site.lgzzk.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="site.lgzzk.dao"/>
     </bean>
+
+    <!--事务管理器-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--配置事务通知-->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="add*"/>
+            <tx:method name="update*"/>
+            <tx:method name="delete*"/>
+            <tx:method name="query*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置事务通知-->
+    <aop:config>
+        <aop:pointcut id="cut" expression="execution(* site.lgzzk.service..*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="cut"/>
+    </aop:config>
+
+    <!--开启事务注解-->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
 </beans>

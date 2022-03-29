@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.lgzzk.dao.ParameterDao">
+
+    <resultMap type="site.lgzzk.entity.Parameter" id="ParameterMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="cost" column="cost" jdbcType="INTEGER"/>
+        <result property="validity" column="validity" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ParameterMap">
+        select id,
+               cost,
+               validity
+        from tb_parameter
+        where id = #{id}
+    </select>
+
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tb_parameter
+        <set>
+            <if test="cost != null">
+                cost = #{cost},
+            </if>
+            <if test="validity != null">
+                validity = #{validity},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
+

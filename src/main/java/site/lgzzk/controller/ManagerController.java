@@ -1,15 +1,13 @@
 package site.lgzzk.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import site.lgzzk.base.ResultInfo;
 import site.lgzzk.entity.Manager;
 import site.lgzzk.exceptions.ParamsException;
 import site.lgzzk.model.ManagerModel;
 import site.lgzzk.service.ManagerService;
+import site.lgzzk.utils.JwtUtil;
 
 import javax.annotation.Resource;
 
@@ -27,6 +25,15 @@ public class ManagerController {
         if (manager == null) throw new ParamsException("缺少参数体！");
         ManagerModel managerModel = managerService.managerLogin(manager.getName(), manager.getPassword());
         resultInfo.setResult(managerModel);
+        return resultInfo;
+    }
+
+
+    @GetMapping("checkToken")
+    @ResponseBody
+    private ResultInfo checkToken(String token){
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setResult(JwtUtil.checkToken(token));
         return resultInfo;
     }
 

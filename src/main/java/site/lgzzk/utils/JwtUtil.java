@@ -1,26 +1,24 @@
 package site.lgzzk.utils;
 
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import java.util.Date;
 import java.util.UUID;
 
 public class JwtUtil {
-    private static long time = 1000 * 6 * 60 * 24;
-    private static String signature = "lgzzk";
+    private static final String signature = "lgzzk.site";
 
-    public static String createToken() {
+    public static String createToken(String name) {
         JwtBuilder builder = Jwts.builder();
+        long time = 1000 * 60 * 60 * 24;
         String jwtToken = builder
                 //header
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
                 //payload
-                .claim("username", "lgzzk")
+                .claim("username", name)
                 .claim("role", "admin")
-                .setSubject("jwt-test")
+                .setSubject("jwt-lgzzk")
                 .setExpiration(new Date(System.currentTimeMillis() + time))
                 .setId(UUID.randomUUID().toString())
                 //signature
@@ -28,5 +26,23 @@ public class JwtUtil {
                 .compact();
 
         return jwtToken;
+    }
+
+    public static boolean checkToken(String token){
+        try {
+            JwtUtil.parseToken(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public static String parseToken(String token) {
+        JwtParser parser = Jwts.parser();
+        Jws<Claims> claimsJws = parser.setSigningKey(signature)
+                .parseClaimsJws(token);
+        Claims body = claimsJws.getBody();
+        return body.toString();
     }
 }

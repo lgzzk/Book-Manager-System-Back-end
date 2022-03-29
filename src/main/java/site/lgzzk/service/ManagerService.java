@@ -6,6 +6,7 @@ import site.lgzzk.dao.ManagerDao;
 import site.lgzzk.entity.Manager;
 import site.lgzzk.model.ManagerModel;
 import site.lgzzk.utils.AsserUtil;
+import site.lgzzk.utils.JwtUtil;
 
 import javax.annotation.Resource;
 
@@ -15,7 +16,7 @@ public class ManagerService {
     @Resource
     private ManagerDao managerDao;
 
-    public ManagerModel managerLogin(String name, String pwd){
+    public ManagerModel managerLogin(String name, String pwd) {
 
         AsserUtil.isTure(StringUtils.isBlank(name), "用户名不能为空！");
         AsserUtil.isTure(StringUtils.isBlank(pwd), "用户密码不能为空！");
@@ -29,6 +30,7 @@ public class ManagerService {
         ManagerModel managerModel = new ManagerModel();
         managerModel.setId(manager.getId());
         managerModel.setName(manager.getName());
+        managerModel.setToken(JwtUtil.createToken(manager.getName()));
 
         return managerModel;
     }

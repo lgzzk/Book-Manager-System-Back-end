@@ -3,6 +3,7 @@ package site.lgzzk;
 import org.junit.Test;
 import site.lgzzk.dao.ManagerDao;
 import site.lgzzk.entity.Manager;
+import site.lgzzk.utils.JwtUtil;
 
 import javax.annotation.Resource;
 import java.util.UUID;
@@ -27,17 +28,8 @@ public class AppTest extends BaseTest {
 
     @Test
     public void jwt() {
-
-    }
-
-    @Test
-    public void parseToken() {
-//        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImxnenprIiwicm9sZSI6ImFkbWluIiwic3ViIjoiand0LXRlc3QiLCJleHAiOjE2NDY1ODQzNzgsImp0aSI6IjY0NGZmZTgxLTBiODYtNDkwNS05ZGM3LWJjYWY2ZjBkMjA1NSJ9.XhEBbfyjR7zyYnFtaGXh3sJEYebW1NUkTKCNQzezgX0";
-//        JwtParser parser = Jwts.parser();
-//        Jws<Claims> claimsJws = parser.setSigningKey(signature).parseClaimsJws(token);
-//        Claims body = claimsJws.getBody();
-//        System.out.println(body);
-//        System.out.println(body.getExpiration());
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwic3ViIjoiand0LWxnenprIiwiZXhwIjoxNjQ2Nzk3NDg3LCJqdGkiOiIyZTRiY2UwMC0yMWQ2LTRhZjMtOWMyMS1jYTNlYjUxZjM2NTQifQ.AHgYYRXLJwazg9CMDaAwxG-bbRAiEgwltlCOF8la_-M";
+        System.out.println(JwtUtil.checkToken(token));
     }
 
 }
