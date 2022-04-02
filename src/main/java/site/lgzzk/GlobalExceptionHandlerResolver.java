@@ -26,7 +26,7 @@ public class GlobalExceptionHandlerResolver {
     @ResponseBody
     public ResultInfo paramsExceptionHandler(ParamsException p) {
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setCode(p.getcode());
+        resultInfo.setCode(p.getCode());
         resultInfo.setMsg(p.getMsg());
         return resultInfo;
     }

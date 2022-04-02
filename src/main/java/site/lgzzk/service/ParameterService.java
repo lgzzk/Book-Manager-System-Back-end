@@ -40,7 +40,6 @@ public class ParameterService {
     @Transactional(propagation = Propagation.REQUIRED)
     public int update(Parameter parameter) {
         int update = parameterDao.update(parameter);
-//        System.out.println(1 / 0);
         return update;
     }
 

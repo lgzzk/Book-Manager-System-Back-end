@@ -16,7 +16,7 @@ public class ParamsException extends RuntimeException {
         return super.getMessage();
     }
 
-    public Integer getcode(){
+    public Integer getCode() {
         return 400;
     }
 }
